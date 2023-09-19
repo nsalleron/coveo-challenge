@@ -1,0 +1,20 @@
+.classpath
+.java-version
+.project
+.mvn
+.settings
+target
+clone/
+
+
+# Frontend
+frontend/node_modules
+frontend/.pnp
+frontend/.pnp.js
+frontend/coverage
+frontend/build
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+.idea
+.vscode
