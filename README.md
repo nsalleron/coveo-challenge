@@ -1,4 +1,4 @@
-The latest commit [#3](https://github.com/nsalleron/coveo-challenge/commit/6578e427a301c017dfd5e69b7678c5f8ca90b235) introduces a major refactor of both the backend and frontend, enhancing the project's structure and functionality, especially for managing city suggestions within an application.
+The latest commit [#2](https://github.com/nsalleron/coveo-challenge/commit/376b253183f5fc1570bd17e7be490337b1a89276) introduces a major refactor of both the backend and frontend, enhancing the project's structure and functionality, especially for managing city suggestions within an application.
 
 I'm sorry for only having a single commit to show you, which prevents you from seeing how the refactoring was carried out step by step. I wasn't aware that I needed to submit code, so I panicked a bit and focused on delivering something as quickly as possible. Here is a list of the major changes made to the project.
 
