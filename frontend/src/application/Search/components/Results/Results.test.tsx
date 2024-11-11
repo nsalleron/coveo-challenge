@@ -32,7 +32,7 @@ describe('Search', () => {
         const {getByTestId} = setup({
             totalNumberOfPages: 2,
             currentPage: 1,
-            cities: [{id: 0, ascii: 'test', name: 'test'}],
+            cities: [{id: 0, country: 'aCountry', name: 'aName'}],
         });
 
         expect(getByTestId('city-0')).toBeInTheDocument();
@@ -42,7 +42,7 @@ describe('Search', () => {
         const {handleNextPageClick, handlePreviousPageClick, getByTestId} = setup({
             totalNumberOfPages: 2,
             currentPage: 1,
-            cities: [{id: 0, ascii: 'test', name: 'test'}],
+            cities: [{id: 0, country: 'aCountry', name: 'aName'}],
         });
 
         fireEvent.click(getByTestId('arrow-right'));
@@ -55,7 +55,7 @@ describe('Search', () => {
         const {handleNextPageClick, handlePreviousPageClick, getByTestId} = setup({
             totalNumberOfPages: 2,
             currentPage: 2,
-            cities: [{id: 0, ascii: 'test', name: 'test'}],
+            cities: [{id: 0, country: 'aCountry', name: 'aName'}],
         });
 
         fireEvent.click(getByTestId('arrow-left'));

@@ -19,6 +19,28 @@ const initialData = {
     page: 0,
 };
 
+function useSearch(currentPage: number, position: Coordinates | null, search: string) {
+    return useQuery({
+        queryKey: ['query', search, currentPage],
+        initialData: initialData,
+        queryFn: async () => {
+            if (search.length === 0) {
+                return initialData
+            }
+
+            const q = search.toLowerCase()
+            const path = position === null
+                ? `http://localhost:8080/suggestions?q=${q}&page=${currentPage - 1}`
+                : `http://localhost:8080/suggestions?q=${q}&latitude=${position.latitude}&longitude=${position.longitude}&page=${currentPage - 1}`
+
+            const {cities, totalNumberOfPages, page} = await fetch(path)
+                .then((response) => response.json())
+
+            return {cities, totalNumberOfPages, page: page + 1}
+        },
+    });
+}
+
 
 const Search: React.FunctionComponent = () => {
     const [state, setCurrentState] = useObjectState<SearchState>(
@@ -32,26 +54,7 @@ const Search: React.FunctionComponent = () => {
 
     const debouncedSearch = useDebounce(state.search)
 
-    const {data, isError, isLoading} = useQuery({
-        queryKey: ['query', debouncedSearch, state.page],
-        initialData: initialData,
-        queryFn: async () => {
-            if (state.search.length === 0) {
-                return initialData
-            }
-
-            const q = state.search.toLowerCase()
-            const position = state.position
-            const path = position === null
-                ? `http://localhost:8080/suggestions?q=${q}&page=${state.page - 1}`
-                : `http://localhost:8080/suggestions?q=${q}&latitude=${position.latitude}&longitude=${position.longitude}&page=${state.page - 1}`
-
-            const {cities, totalNumberOfPages, page} = await fetch(path)
-                .then((response) => response.json())
-
-            return {cities, totalNumberOfPages, page: page + 1}
-        },
-    });
+    const {data, isError, isLoading} = useSearch(state.page, state.position, debouncedSearch)
 
     return (
         <div data-testid="search" className="text-center">
@@ -74,7 +77,7 @@ const Search: React.FunctionComponent = () => {
                         }))}
                         isLoading={isLoading}
                     />
-                    {state.showResults && (
+                    {state.showResults && debouncedSearch === state.search && (
                         <Results
                             cities={data.cities}
                             currentPage={state.page}

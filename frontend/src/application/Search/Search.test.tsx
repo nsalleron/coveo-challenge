@@ -22,7 +22,7 @@ describe('Search', () => {
             isLoading: false,
             error: null,
             isError: false,
-            data: { cities: [{ id: 1, ascii: 'Test', name: 'Test' }] },
+            data: { cities: [{ id: 1, country: 'aCountry', name: 'aName' }] },
         });
 
         const { getByTestId } = render(<Search />);
@@ -37,7 +37,7 @@ describe('Search', () => {
             error: null,
             isError: false,
             data: {
-                cities: [{ id: 1, ascii: 'Test', name: 'Test' }],
+                cities: [{ id: 1, country: 'aCountry', name: 'aName' }],
             },
         });
 

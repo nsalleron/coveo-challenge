@@ -5,7 +5,7 @@ import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
 export interface City {
     id: number,
-    ascii: string,
+    country: string,
     name: string
 }
 
@@ -48,8 +48,8 @@ const CityListItem: React.FunctionComponent<CityListItemProps> = ({city}) => (
     <li data-testid={`city-${city.id}`} key={`city-${city.id}`} id={"suggestions"} className="flex p-2.5 bg-orange-600 border border-black">
         <img src="/images/city.webp" className="h-24 w-24 float-left" alt={`${city.name} city logo`} />
         <div className="flex flex-col justify-center items-center flex-grow">
-            <span>Country: {city.name}</span>
-            <span>Name: {city.ascii}</span>
+            <span>Country: {city.country}</span>
+            <span>Name: {city.name}</span>
         </div>
     </li>
 );

@@ -53,7 +53,7 @@ public class CityServiceTest {
         when(cityRepository.getCities()).thenReturn(SuggestionHelper.CITIES);
         final FrontSuggestionsRecord searchResult = service.retrieveCities("Qué", 0, null, null);
 
-        assertEquals(searchResult.totalNumberOfPages(), 1);
+        assertEquals(1, searchResult.totalNumberOfPages());
         assertEquals(searchResult.cities(), List.of(SuggestionHelper.QUEBEC_CITY));
         verify(cityRepository, times(1)).getCities();
 

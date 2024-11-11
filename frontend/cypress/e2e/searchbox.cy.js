@@ -49,7 +49,7 @@ context('Searchbox', () => {
         displayResultAndNextPage()
 
         cy.get('[data-testid=count-pages]').contains(
-             '2 / 11'
+             '2 / 18'
         );
     });
 
@@ -60,7 +60,7 @@ context('Searchbox', () => {
         displayResultAndNextPage()
         cy.get('[data-testid=arrow-left]').click();
         cy.get('[data-testid=count-pages]').contains(
-            '1 / 11'
+            '1 / 18'
         );
     });
 });

@@ -28,7 +28,7 @@ public class CityService {
     }
 
     public FrontSuggestionsRecord retrieveCities(String q, Integer page, Float latitude, Float longitude) {
-        Stream<CityRecord> citiesStream = cityRepository.getCities().stream().filter(fromName(q));
+        Stream<CityRecord> citiesStream = cityRepository.getCities().stream().filter(fromName(q.toLowerCase()));
         citiesStream = filterAccordingToLatLng(latitude, longitude, citiesStream);
         List<CityRecord> cities = citiesStream.toList();
 
@@ -63,8 +63,16 @@ public class CityService {
         return cities;
     }
 
-    private static Predicate<CityRecord> fromName(String q) {
-        return (c) -> Arrays.stream(c.altNames()).filter((alt) -> alt.toLowerCase().contains(q)).toList().size() > 0;
+    private Predicate<CityRecord> fromName(String q) {
+        return (c) -> isInAltNames(c.altNames(), q) || isInName(c.name(), q);
+    }
+
+    private boolean isInAltNames(String[] altNames, String q) {
+        return Arrays.stream(altNames).filter((alt) -> alt.toLowerCase().contains(q)).toList().size() > 0;
+    }
+
+    private boolean isInName(String name, String q) {
+        return name.toLowerCase().contains(q);
     }
 
     private Integer getTotalNumberOfPages(List<CityRecord> cities) {

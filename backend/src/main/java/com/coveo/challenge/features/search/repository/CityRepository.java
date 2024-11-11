@@ -42,7 +42,7 @@ public class CityRepository {
                 String[] fields = line.split("\t");
 
                 // Populate the city object with the fields.
-                CityRecord city = new CityRecord(Integer.parseInt(fields[0]), fields[1], fields[2].split(","), Float.parseFloat(fields[4]), Float.parseFloat(fields[5]));
+                CityRecord city = new CityRecord(Integer.parseInt(fields[0]), fields[1], fields[17].replace("_", " "), fields[2].split(","), Float.parseFloat(fields[4]), Float.parseFloat(fields[5]));
 
                 // Add the city to the return value.
                 if (cities.get(city.id()) == null) {
