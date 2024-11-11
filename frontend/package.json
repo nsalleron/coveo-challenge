@@ -24,6 +24,7 @@
     "cy:open": "cypress open",
     "cy:test": "cypress run",
     "test": "jest test",
+    "format": "prettier . --write",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

@@ -31,8 +31,8 @@ function useSearch(currentPage: number, position: Coordinates | null, search: st
       const q = search.toLowerCase();
       const path =
         position === null
-          ? `http://localhost:8080/suggestions?q=${q}&page=${currentPage - 1}`
-          : `http://localhost:8080/suggestions?q=${q}&latitude=${position.latitude}&longitude=${position.longitude}&page=${currentPage - 1}`;
+          ? `${process.env.REACT_APP_API_URL}/suggestions?q=${q}&page=${currentPage - 1}`
+          : `${process.env.REACT_APP_API_URL}/suggestions?q=${q}&latitude=${position.latitude}&longitude=${position.longitude}&page=${currentPage - 1}`;
 
       const { cities, totalNumberOfPages, page } = await fetch(path).then((response) => response.json());
 
