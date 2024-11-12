@@ -42,4 +42,9 @@ The frontend improvements focus on enhancing the user experience and modernizing
   - Developed new hooks, such as debounce and objectState, to optimize network call management and local component state handling.
 - **Testing Improvements**
   - Added tests for all components to ensure functionality across the frontend.
-    
+
+TODO
+Backend: Tresh radius à faire 5 / 10 / 15 / 20 km
+Backend: Define SIZE page
+Backend: POST request
+Frontend: Consommation API et génération du code depuis cette API OpenAPI
