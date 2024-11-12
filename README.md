@@ -40,7 +40,7 @@ The frontend improvements focus on enhancing the user experience and modernizing
 - **Dependency Updates**:
   - **React**: 16 -> 18
   - **Jest**: New Jest configuration for unit tests. 
-  - **Lodash / React Router / React Query / Testing Library **
+  - **Lodash / React Router / React Query / Testing Library**
 - **Removal of CSS Files**
   - Replaced CSS files with Tailwind CSS, offering a more flexible and maintainable styling approach.
 - **Structure**
@@ -50,4 +50,46 @@ The frontend improvements focus on enhancing the user experience and modernizing
 - **Testing Improvements**
   - Added tests for all components to ensure functionality across the frontend.
 
-TODO: API Code generation from Swagger document.
+
+## 3. Proposed Release Plan
+
+**Release 1.0.1:**
+- **Bugfix:** Refactor repository - Retrieve and parse code at bean instantiation, parsing only the relevant fields. Added repository-level tests and warnings for duplicate keys.
+- **Bugfix:** Controller-level validation of page values: if the page is below 0, set it to 0.
+- **Tests:** Black-box input/output tests at the Controller level.
+- **Bugfix:** Fix Cypress tests for automated release.
+
+- **Feature:** Search by alternative names.
+- **Feature:** Geolocation button - it's a best practice not to request user geolocation unnecessarily due to privacy concerns.
+- **Feature:** Error message display in case of server connection loss.
+- **Feature:** Display of alternative names.
+
+**Release 1.0.2:**
+- **Bugfix / Refactor:** Change from `RequestMapping` to `PostMapping`.
+- **Tech / Refactor:** Add logs via `loggerFactory`.
+- **Refactor:** Create a service with separation of concerns, establishing smaller methods for each action + service-level testing.
+
+- **Feature:** Remove default values for latitude/longitude for more results.
+- **Feature:** Add filters in the search bar to allow sharing of search links.
+- **Feature:** Integrate React Router + add an error page for invalid URLs.
+- **Feature:** Country filter and corresponding tests.
+- **Feature:** Display of admins.
+
+**Release 1.0.3:**
+- **Refactor:** Use streams for filtering, mapping, etc.
+- **Refactor:** Java data class records for reduced boilerplate code.
+- **Tech:** Add configurations for Prettier, Jest, and Cypress (TS version).
+
+- **Feature:** Threshold radius options of 5 / 10 / 20 / 40 / 100 km.
+- **Feature (TODO):** Filter admins and test.
+- **Feature (TODO):** Display population and test.
+- **Feature (TODO):** Display modification date and test.
+
+**Release 1.0.4:**
+- **Tech:** Update dependencies (React 16 => 18).
+- **Tech:** Migrate CSS files to TailwindCSS.
+- **Tech:** Add hooks `useDebounce`, `useObjectState`, `useApiSearch` for refactoring and optimisation.
+
+- **Feature (TODO):** Custom definition of page SIZE.
+- **Feature (TODO):** Display elevation.
+- **Feature (TODO):** Multi-criteria filters.

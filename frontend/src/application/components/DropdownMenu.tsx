@@ -11,6 +11,7 @@ type DropdownMenuProps<T extends ReactNode> = {
 
 function DropdownMenu<T extends ReactNode>({ title, unit, values, selectedValue, callback }: DropdownMenuProps<T>) {
   const [currentTitle, setCurrentTitle] = useState(title);
+
   return (
     <Menu>
       <MenuButton className='flex justify-center items-center gap-2 h-14 p-3 rounded-2xl bg-gray-300 text-sm/6 font-semibold shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-400 data-[open]:bg-gray-400 data-[focus]:outline-1 data-[focus]:outline-white'>
@@ -20,15 +21,17 @@ function DropdownMenu<T extends ReactNode>({ title, unit, values, selectedValue,
       <MenuItems
         transition
         anchor='bottom end'
-        className='w-20 origin-top-right rounded-xl border border-white/5 p-1 text-sm/6 text-white transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 bg-charcoal '
+        className='w-1/5 origin-top-right rounded-xl border border-white/5 p-1 text-sm/6 text-white transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 bg-charcoal'
       >
         {values.map((value, key) => {
           return (
             <MenuItem key={key}>
               <button
                 onClick={() => {
+                    const titleValue = value !== null ? value : ''
+                    const titleUnit = unit !== undefined ? unit : ''
                   if (selectedValue !== value) {
-                    setCurrentTitle(`${title} ${value} ${unit !== undefined ? unit : ''}`);
+                    setCurrentTitle(`${title} ${titleValue} ${titleUnit}`);
                     return callback?.(value);
                   } else {
                     setCurrentTitle(`${title}`);
@@ -37,7 +40,7 @@ function DropdownMenu<T extends ReactNode>({ title, unit, values, selectedValue,
                 }}
                 className='groupflex w-full items-center gap-2 rounded-lg py-1.5 px-1 data-[focus]:bg-white/10'
               >
-                {value !== 'undefined' ? value : ''} {unit}
+                {value !== null ? value : 'Remove'} {unit}
               </button>
             </MenuItem>
           );

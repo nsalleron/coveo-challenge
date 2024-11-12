@@ -1,10 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { faLocationCrosshairs, faMagnifyingGlass, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { toNumber } from 'lodash';
 import DropdownMenu from '../../../components/DropdownMenu';
-import { Country } from '../../useSearchApi';
+import { Filter } from '../../useSearchApi';
 
 const radiusValues = [null, 5, 10, 20, 40, 100];
 const pageValues = [null, 5, 10, 20, 40, 100];
@@ -13,16 +13,13 @@ type LocationWithRadiusProps = {
   onLocationAsked: () => void;
   onRadiusChange?: (radius: number) => void;
   currentRadius?: number;
-  showRadius?: boolean;
 };
 
 const LocationWithRadius = ({
   onLocationAsked,
   onRadiusChange,
   currentRadius,
-  showRadius = false,
 }: LocationWithRadiusProps) => {
-  const [radiusVisible, setRadiusVisible] = useState(showRadius);
 
   return (
     <div className={'flex flex-col gap-2'}>
@@ -32,12 +29,10 @@ const LocationWithRadius = ({
         aria-label={'locate me'}
         onClick={() => {
           onLocationAsked();
-          setRadiusVisible(true);
         }}
       >
         <FontAwesomeIcon icon={faLocationCrosshairs} />
       </button>
-      {radiusVisible && (
         <DropdownMenu
           title={'Radius'}
           unit={'km'}
@@ -45,7 +40,6 @@ const LocationWithRadius = ({
           callback={(value) => onRadiusChange?.(toNumber(value))}
           selectedValue={currentRadius}
         />
-      )}
     </div>
   );
 };
@@ -60,13 +54,12 @@ export interface SearchBarProps {
   isLoading: boolean;
   onLocationAsked: () => void;
   currentRadius?: number;
-  onRadiusChange?: (radius: number) => void;
+  onRadiusChange: (radius: number) => void;
   currentPage: number;
-  onPageSizeChange?: (radius: number) => void;
-  showRadius?: boolean;
-  selectedCountry: string | null;
-  onCountryChange?: (country: string | null) => void;
-  countries: Country[];
+  onPageSizeChange: (radius: number) => void;
+  currentCountry: string | null;
+  onCountryChange: (country: string | null) => void;
+  countries: Filter[];
 }
 
 const SearchBar: React.FunctionComponent<SearchBarProps> = ({
@@ -82,8 +75,7 @@ const SearchBar: React.FunctionComponent<SearchBarProps> = ({
   onRadiusChange,
   currentPage,
   onPageSizeChange,
-  showRadius = false,
-  selectedCountry,
+  currentCountry,
   onCountryChange,
   countries,
 }) => {
@@ -129,7 +121,7 @@ const SearchBar: React.FunctionComponent<SearchBarProps> = ({
         </div>
         <DropdownMenu
           title={'Countries'}
-          selectedValue={selectedCountry}
+          selectedValue={currentCountry}
           values={countries.map((country) => country.name.toString())}
           callback={(value) => onCountryChange?.(value)}
         />
@@ -139,7 +131,6 @@ const SearchBar: React.FunctionComponent<SearchBarProps> = ({
         <LocationWithRadius
           onLocationAsked={onLocationAsked}
           onRadiusChange={onRadiusChange}
-          showRadius={showRadius}
           currentRadius={currentRadius}
         />
         <div className={'flex flex-col gap-2'}>

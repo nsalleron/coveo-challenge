@@ -71,8 +71,8 @@ const CityListItem: React.FunctionComponent<CityListItemProps> = ({ city }) => {
       <img src='/images/city.webp' className='h-24 w-24 float-left' alt={`${city.name} city logo`} />
       <div className='flex justify-between px-10 items-start flex-grow'>
         <div className={'flex flex-col items-start w-1/2'}>
-          <span>Country: {city.country}</span>
           <span>Name: {city.name}</span>
+          <span>Country: {city.country}</span>
           <span>Admins: {admins.substr(0, admins.length - 2)}</span>
         </div>
         {city.altNames.length > 0 && (

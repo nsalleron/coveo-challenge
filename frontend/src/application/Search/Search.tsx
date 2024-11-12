@@ -20,6 +20,7 @@ enum URL_PARAMS {
   PAGE_SIZE = 'page_size',
   RADIUS = 'radius',
   COUNTRY = 'country',
+  ADMIN = 'admin',
 }
 
 type SearchState = {
@@ -31,6 +32,8 @@ type SearchState = {
   page: number;
   pageSize: number;
   selectedCountry: string | null;
+  currentAdmin: string | null;
+
 };
 const retrievePositionFromSearchParams = (latitude: string | null, longitude: string | null) => {
   try {
@@ -71,6 +74,7 @@ const Search: React.FunctionComponent = () => {
     ),
     radius: retrievePageFromSearchParams(searchParams.get(URL_PARAMS.RADIUS), 100),
     selectedCountry: searchParams.get(URL_PARAMS.COUNTRY),
+    currentAdmin: searchParams.get(URL_PARAMS.ADMIN),
   });
 
   const debouncedSearch = useDebounce(state.search);
@@ -82,6 +86,7 @@ const Search: React.FunctionComponent = () => {
     state.position,
     state.radius,
     state.selectedCountry,
+      state.currentAdmin
   );
 
   const isResultDisplayable = state.showResults && debouncedSearch === state.search;
@@ -128,7 +133,7 @@ const Search: React.FunctionComponent = () => {
               onChange(URL_PARAMS.FILTER, `${true}`);
             }}
             countries={data.countries}
-            selectedCountry={state.selectedCountry}
+            currentCountry={state.selectedCountry}
             onCountryChange={(country) => {
               setCurrentState({ selectedCountry: country });
               onChange(URL_PARAMS.COUNTRY, country);
@@ -149,7 +154,6 @@ const Search: React.FunctionComponent = () => {
               })
             }
             isLoading={isLoading}
-            showRadius={state.position !== undefined}
             currentPage={state.page}
             currentRadius={state.radius}
           />

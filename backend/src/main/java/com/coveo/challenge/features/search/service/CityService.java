@@ -58,7 +58,7 @@ public class CityService {
         List<CityRecord> cities = citiesStream.toList();
 
         List<FrontFilter> countries = new java.util.ArrayList<>(cities.stream().map((c) -> new FrontFilter(c.country().hashCode(), c.country())).distinct().toList());
-        List<FrontFilter> admins = new java.util.ArrayList<>(cities.stream().flatMap((c) -> c.admins().stream().map((a) -> new FrontFilter(a.hashCode(), a))).distinct().toList());
+        List<FrontFilter> admins = new java.util.ArrayList<>(cities.stream().flatMap((c) -> c.admins().stream().map((a) -> new FrontFilter(a.hashCode(), a))).distinct().filter((c) -> !c.name().isEmpty()).toList());
 
         return page.isPresent() ? getPaginatedSuggestions(currentPage, currentpageSize, cities, countries, admins) : new FrontSuggestionsRecord(null, null, cities, countries, admins);
     }

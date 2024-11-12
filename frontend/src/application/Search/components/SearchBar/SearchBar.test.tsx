@@ -17,9 +17,11 @@ describe('SearchBar', () => {
     ],
     onLocationAsked: jest.fn(),
     isLoading: false,
-    selectedCountry: null,
+    currentCountry: null,
     currentPage: 0,
-    showRadius: false,
+    onRadiusChange: jest.fn(),
+    onPageSizeChange: jest.fn(),
+    onCountryChange: jest.fn(),
   };
 
   it('should renders correctly', () => {
