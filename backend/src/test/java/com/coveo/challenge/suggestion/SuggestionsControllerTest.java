@@ -5,7 +5,7 @@ package com.coveo.challenge.suggestion;
 
 import com.coveo.challenge.features.search.controller.SuggestionsDtoRecord;
 import com.coveo.challenge.features.search.service.CityService;
-import com.coveo.challenge.features.search.FrontSuggestionsRecord;
+import com.coveo.challenge.features.search.service.FrontSuggestionsRecord;
 import com.coveo.challenge.features.search.controller.SuggestionsController;
 import com.coveo.challenge.suggestion.helper.SuggestionHelper;
 import org.junit.jupiter.api.Test;

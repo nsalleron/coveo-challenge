@@ -1,10 +1,11 @@
 import Search from './Search';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import '@testing-library/jest-dom';
 import { withMemoryRouter } from '../../../test/tests-utils';
+
 jest.mock('@tanstack/react-query', () => ({
   useQuery: jest.fn(),
 }));
@@ -23,7 +24,10 @@ describe('Search', () => {
       isLoading: false,
       error: null,
       isError: false,
-      data: { cities: [{ id: 1, country: 'aCountry', name: 'aName', altNames: [] }] },
+      data: {
+        cities: [{ id: 1, country: 'aCountry', name: 'aName', altNames: [] }],
+        countries: [{ id: 0, name: 'aCountryName' }],
+      },
     });
 
     const { getByTestId } = render(
@@ -41,6 +45,7 @@ describe('Search', () => {
       isError: false,
       data: {
         cities: [{ id: 1, country: 'aCountry', name: 'aName', altNames: [] }],
+        countries: [{ id: 0, name: 'aCountryName' }],
       },
     });
 

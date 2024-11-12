@@ -1,6 +1,6 @@
 package com.coveo.challenge.features.search.controller;
 
-import com.coveo.challenge.features.search.FrontSuggestionsRecord;
+import com.coveo.challenge.features.search.service.FrontSuggestionsRecord;
 import com.coveo.challenge.features.search.service.CityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,8 @@ public class SuggestionsController {
                 suggestionsDtoRecord.latitude(),
                 suggestionsDtoRecord.longitude(),
                 suggestionsDtoRecord.radius(),
-                suggestionsDtoRecord.pageSize()
+                suggestionsDtoRecord.pageSize(),
+                suggestionsDtoRecord.selectedCountry()
         );
     }
 }

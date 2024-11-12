@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
-import SearchBar from './SearchBar';
+import SearchBar, { SearchBarProps } from './SearchBar';
 import '@testing-library/jest-dom';
 
 describe('SearchBar', () => {
@@ -10,9 +10,16 @@ describe('SearchBar', () => {
     onSearchButtonClicked: jest.fn(),
     onSearchTextChange: jest.fn(),
     onSuggestionsClicked: jest.fn(),
-    cities: ['New York', 'London'],
+    cities: ['New York', 'Paris'],
+    countries: [
+      { id: 0, name: 'America' },
+      { id: 1, name: 'France' },
+    ],
     onLocationAsked: jest.fn(),
     isLoading: false,
+    selectedCountry: null,
+    currentPage: 0,
+    showRadius: false,
   };
 
   it('should renders correctly', () => {

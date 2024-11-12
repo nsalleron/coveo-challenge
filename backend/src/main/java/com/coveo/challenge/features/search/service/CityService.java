@@ -1,7 +1,6 @@
 package com.coveo.challenge.features.search.service;
 
 import com.coveo.challenge.core.LatLngUtils;
-import com.coveo.challenge.features.search.FrontSuggestionsRecord;
 import com.coveo.challenge.features.search.repository.CityRecord;
 import com.coveo.challenge.features.search.repository.CityRepository;
 import org.slf4j.Logger;
@@ -37,26 +36,35 @@ public class CityService {
                                                  Optional<Float> latitude,
                                                  Optional<Float> longitude,
                                                  Optional<Integer> radius,
-                                                 Optional<Integer> pageSize) {
+                                                 Optional<Integer> pageSize,
+                                                 Optional<String> country) {
 
-        if(query.isEmpty()) {
-            return new FrontSuggestionsRecord(null, null, Collections.emptyList());
+        if (query.isEmpty()) {
+            return new FrontSuggestionsRecord(null, null, Collections.emptyList(), Collections.emptyList());
         }
 
         Integer currentPage = retrieveCurrentPage(page);
         Integer currentRadius = retrieveCurrentRadius(radius);
         Integer currentpageSize = retrieveCurrentPageSize(pageSize);
 
+
         Stream<CityRecord> citiesStream = cityRepository.getCities().stream().filter(fromName(query.get().toLowerCase()));
         citiesStream = filterAccordingToLatLng(latitude, longitude, currentRadius, citiesStream);
+
+        if (country.isPresent()) {
+            citiesStream = citiesStream.filter(city -> city.country().equals(country.get()));
+        }
+
         List<CityRecord> cities = citiesStream.toList();
 
-        return page.isPresent() ? getPaginatedSuggestions(currentPage, currentpageSize, cities) : new FrontSuggestionsRecord(null, null, cities);
+        List<FrontFilter> countries = new java.util.ArrayList<>(cities.stream().map((c) -> new FrontFilter(c.country().hashCode(), c.country())).distinct().toList());
+
+        return page.isPresent() ? getPaginatedSuggestions(currentPage, currentpageSize, cities, countries) : new FrontSuggestionsRecord(null, null, cities, countries);
     }
 
     private Integer retrieveCurrentPageSize(Optional<Integer> pageSize) {
-        if(pageSize.isPresent()) {
-            if(pageSize.get() <= 0) {
+        if (pageSize.isPresent()) {
+            if (pageSize.get() <= 0) {
                 return MAX_PAGE_SIZE;
             }
             return pageSize.get();
@@ -75,12 +83,13 @@ public class CityService {
         return citiesStream;
     }
 
-    private FrontSuggestionsRecord getPaginatedSuggestions(Integer page, Integer pageSize, List<CityRecord> cities) {
+    private FrontSuggestionsRecord getPaginatedSuggestions(Integer page, Integer pageSize, List<CityRecord> cities, List<FrontFilter> countries) {
         final Integer currentPage = page < 0 ? 0 : page;
         return new FrontSuggestionsRecord(
                 currentPage,
                 getTotalNumberOfPages(cities, pageSize),
-                getSubListAccordingToCurrentPage(currentPage, cities, pageSize)
+                getSubListAccordingToCurrentPage(currentPage, cities, pageSize),
+                countries
         );
     }
 

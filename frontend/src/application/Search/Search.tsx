@@ -19,6 +19,7 @@ enum URL_PARAMS {
   PAGE = 'page',
   PAGE_SIZE = 'page_size',
   RADIUS = 'radius',
+  COUNTRY = 'country',
 }
 
 type SearchState = {
@@ -29,6 +30,7 @@ type SearchState = {
   showResults: boolean;
   page: number;
   pageSize: number;
+  selectedCountry: string | null;
 };
 const retrievePositionFromSearchParams = (latitude: string | null, longitude: string | null) => {
   try {
@@ -51,7 +53,7 @@ const retrievePageFromSearchParams = (page: string | null, defaultValue?: number
     const parsedNumber = parseInt(page);
     return isNaN(parsedNumber) ? (defaultValue ?? 1) : parsedNumber;
   }
-  return (defaultValue ?? 1);
+  return defaultValue ?? 1;
 };
 
 const Search: React.FunctionComponent = () => {
@@ -68,6 +70,7 @@ const Search: React.FunctionComponent = () => {
       searchParams.get(URL_PARAMS.LONGITUDE),
     ),
     radius: retrievePageFromSearchParams(searchParams.get(URL_PARAMS.RADIUS), 100),
+    selectedCountry: searchParams.get(URL_PARAMS.COUNTRY),
   });
 
   const debouncedSearch = useDebounce(state.search);
@@ -78,14 +81,15 @@ const Search: React.FunctionComponent = () => {
     state.pageSize,
     state.position,
     state.radius,
+    state.selectedCountry,
   );
 
   const isResultDisplayable = state.showResults && debouncedSearch === state.search;
 
-  const onChange = (name: string, value: string) => {
-    if (searchParams.has(name)) {
+  const onChange = (name: string, value: string | null) => {
+    if (searchParams.has(name) && value !== null) {
       searchParams.set(name, value);
-    } else {
+    } else if (value !== null) {
       searchParams.append(name, value);
     }
     setSearchParams(searchParams);
@@ -123,6 +127,12 @@ const Search: React.FunctionComponent = () => {
               onChange(URL_PARAMS.SHOW, `${true}`);
               onChange(URL_PARAMS.FILTER, `${true}`);
             }}
+            countries={data.countries}
+            selectedCountry={state.selectedCountry}
+            onCountryChange={(country) => {
+              setCurrentState({ selectedCountry: country });
+              onChange(URL_PARAMS.COUNTRY, country);
+            }}
             onSuggestionsClicked={(search) => {
               setCurrentState({ search, filterResult: true, showResults: true });
               onChange(URL_PARAMS.QUERY, search);
@@ -140,6 +150,8 @@ const Search: React.FunctionComponent = () => {
             }
             isLoading={isLoading}
             showRadius={state.position !== undefined}
+            currentPage={state.page}
+            currentRadius={state.radius}
           />
           {isResultDisplayable && (
             <Results

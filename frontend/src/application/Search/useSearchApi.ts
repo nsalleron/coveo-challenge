@@ -2,8 +2,14 @@ import { City } from './components/Results/Results';
 import { useQuery } from '@tanstack/react-query';
 import { LatLngCoords } from './utils';
 
+export type Country = {
+  id: number;
+  name: string;
+};
+
 const initialData = {
   cities: [] as City[],
+  countries: [] as Country[],
   totalNumberOfPages: 0,
   page: 0,
 };
@@ -14,9 +20,10 @@ export default function useSearch(
   pageSize: number,
   position: LatLngCoords | null,
   radius: number | null,
+  selectedCountry: string | null,
 ) {
   return useQuery({
-    queryKey: ['query', search, currentPage, pageSize, position, radius],
+    queryKey: ['query', search, currentPage, pageSize, position, radius, selectedCountry],
     initialData,
     queryFn: async () => {
       if (search.length === 0) {
@@ -35,7 +42,7 @@ export default function useSearch(
         };
       }
 
-      const { cities, totalNumberOfPages, page } = await fetch(suggestionsUrl.href, {
+      const { cities, countries, totalNumberOfPages, page } = await fetch(suggestionsUrl.href, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -45,11 +52,12 @@ export default function useSearch(
           query,
           page: currentPage - 1,
           pageSize: pageSize,
+          selectedCountry,
           ...positionObj,
         }),
       }).then((response) => response.json());
 
-      return { cities, totalNumberOfPages, page: page + 1 };
+      return { cities, totalNumberOfPages, page: page + 1, countries };
     },
   });
 }
