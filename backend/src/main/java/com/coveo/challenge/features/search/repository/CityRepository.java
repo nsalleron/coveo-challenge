@@ -41,8 +41,12 @@ public class CityRepository {
                 // Because it's a tab separated file, split all the lines on the tab char.
                 String[] fields = line.split("\t");
 
+                String[] altNames = fields[3].split(",");
+                if (altNames.length == 1 && altNames[0].isEmpty()) {
+                    altNames = new String[0];
+                }
                 // Populate the city object with the fields.
-                CityRecord city = new CityRecord(Integer.parseInt(fields[0]), fields[1], fields[17].replace("_", " "), fields[2].split(","), Float.parseFloat(fields[4]), Float.parseFloat(fields[5]));
+                CityRecord city = new CityRecord(Integer.parseInt(fields[0]), fields[1], fields[17].replace("_", " "), altNames, Float.parseFloat(fields[4]), Float.parseFloat(fields[5]));
 
                 // Add the city to the return value.
                 if (cities.get(city.id()) == null) {
