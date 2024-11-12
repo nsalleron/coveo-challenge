@@ -8,6 +8,7 @@ export interface City {
   country: string;
   name: string;
   altNames: string[];
+  admins: string[];
 }
 
 type ResultsProps = {
@@ -34,7 +35,7 @@ export const Results: React.FunctionComponent<ResultsProps> = ({
 
   return (
     <div data-testid='result-list' className='w-full'>
-      <ol className={'m-6'}>
+      <ol className={'flex flex-col m-6 gap-2'}>
         {cities.map((c, i) => (
           <CityListItem key={i} city={c} />
         ))}
@@ -57,29 +58,39 @@ type CityListItemProps = {
   city: City;
 };
 
-const CityListItem: React.FunctionComponent<CityListItemProps> = ({ city }) => (
-  <li
-    data-testid={`city-${city.id}`}
-    key={`city-${city.id}`}
-    id={'suggestions'}
-    className='flex p-2.5 bg-orange-600 border border-black'
-  >
-    <img src='/images/city.webp' className='h-24 w-24 float-left' alt={`${city.name} city logo`} />
-    <div className='flex justify-between px-10 items-center flex-grow'>
-      <div className={'flex flex-col'}>
-        <span>Country: {city.country}</span>
-        <span>Name: {city.name}</span>
-      </div>
-      {city.altNames.length > 0 && (
-        <div className={'flex flex-col justify-start items-start'}>
-          <span>Alternative names</span>
-          <ol className={'max-h-16 overflow-y-auto border-2 border-solid border-amber-950'}>
-            {city.altNames.map((altName, id) => (
-              <li key={id}>{altName}</li>
-            ))}
-          </ol>
+const CityListItem: React.FunctionComponent<CityListItemProps> = ({ city }) => {
+  let admins = city.admins.join(', ');
+
+  return (
+    <li
+      data-testid={`city-${city.id}`}
+      key={`city-${city.id}`}
+      id={'suggestions'}
+      className='flex p-2.5 bg-orange-600 border border-black rounded-2xl'
+    >
+      <img src='/images/city.webp' className='h-24 w-24 float-left' alt={`${city.name} city logo`} />
+      <div className='flex justify-between px-10 items-start flex-grow'>
+        <div className={'flex flex-col items-start w-1/2'}>
+          <span>Country: {city.country}</span>
+          <span>Name: {city.name}</span>
+          <span>Admins: {admins.substr(0, admins.length - 2)}</span>
         </div>
-      )}
-    </div>
-  </li>
-);
+        {city.altNames.length > 0 && (
+          <div className={'flex flex-col justify-start items-start w-1/2 gap-2'}>
+            <span>Alternative names</span>
+            <ol className={'flex flex-wrap gap-2 items-start overflow-y-auto max-h-16 w-full border-solid'}>
+              {city.altNames.map((altName, id) => (
+                <li
+                  className={'rounded-md bg-charcoal py-0.5 px-2.5 border text-xs text-white transition-all shadow-sm'}
+                  key={id}
+                >
+                  {altName}
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
+      </div>
+    </li>
+  );
+};

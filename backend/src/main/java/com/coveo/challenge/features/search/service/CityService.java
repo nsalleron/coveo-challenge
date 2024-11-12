@@ -40,7 +40,7 @@ public class CityService {
                                                  Optional<String> country) {
 
         if (query.isEmpty()) {
-            return new FrontSuggestionsRecord(null, null, Collections.emptyList(), Collections.emptyList());
+            return new FrontSuggestionsRecord(null, null, Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
         }
 
         Integer currentPage = retrieveCurrentPage(page);
@@ -58,8 +58,9 @@ public class CityService {
         List<CityRecord> cities = citiesStream.toList();
 
         List<FrontFilter> countries = new java.util.ArrayList<>(cities.stream().map((c) -> new FrontFilter(c.country().hashCode(), c.country())).distinct().toList());
+        List<FrontFilter> admins = new java.util.ArrayList<>(cities.stream().flatMap((c) -> c.admins().stream().map((a) -> new FrontFilter(a.hashCode(), a))).distinct().toList());
 
-        return page.isPresent() ? getPaginatedSuggestions(currentPage, currentpageSize, cities, countries) : new FrontSuggestionsRecord(null, null, cities, countries);
+        return page.isPresent() ? getPaginatedSuggestions(currentPage, currentpageSize, cities, countries, admins) : new FrontSuggestionsRecord(null, null, cities, countries, admins);
     }
 
     private Integer retrieveCurrentPageSize(Optional<Integer> pageSize) {
@@ -83,13 +84,14 @@ public class CityService {
         return citiesStream;
     }
 
-    private FrontSuggestionsRecord getPaginatedSuggestions(Integer page, Integer pageSize, List<CityRecord> cities, List<FrontFilter> countries) {
+    private FrontSuggestionsRecord getPaginatedSuggestions(Integer page, Integer pageSize, List<CityRecord> cities, List<FrontFilter> countries, List<FrontFilter> admins) {
         final Integer currentPage = page < 0 ? 0 : page;
         return new FrontSuggestionsRecord(
                 currentPage,
                 getTotalNumberOfPages(cities, pageSize),
                 getSubListAccordingToCurrentPage(currentPage, cities, pageSize),
-                countries
+                countries,
+                admins
         );
     }
 

@@ -97,7 +97,8 @@ const SearchBar: React.FunctionComponent<SearchBarProps> = ({
   return (
     <div data-testid='search-bar' className='flex gap-2 items-start'>
       <div className={'flex gap-2'}>
-        <input
+        <div className={'flex flex-col'}>
+          <input
             data-testid='search-input'
             className={'max-w-lg text-xl p-3 border-none h-14 rounded-2xl'}
             ref={inputRef}
@@ -105,42 +106,41 @@ const SearchBar: React.FunctionComponent<SearchBarProps> = ({
             value={currentSearch}
             onKeyDown={onKeyDown}
             onChange={(e) => onSearchTextChange(e.target.value)}
-        ></input>
-        {cities.length > 0 && (
+          ></input>
+          {cities.length > 0 && (
             <ol data-testid='suggestions' className='text-left mt-1 text-black max-w-lg border-solid rounded-2xl'>
               {cities.map((city, key) => {
-                const isFirst = key === 0 ? "rounded-t-2xl" : ""
-                const isLast = key === cities.length - 1 ? "rounded-b-2xl" : ""
+                const isFirst = key === 0 ? 'rounded-t-2xl' : '';
+                const isLast = key === cities.length - 1 ? 'rounded-b-2xl' : '';
                 return (
-                    <li
-                        key={key}
-                        className={`bg-gray-200 cursor-pointer text-xl pt-1.5 pb-1.5 pr-0 pl-3 hover:bg-gray-300 ${isFirst} ${isLast}`}
-                        onClick={() => {
-                          onSuggestionsClicked(city);
-                        }}
-                    >
-                      <span>{city}</span>
-                    </li>
+                  <li
+                    key={key}
+                    className={`bg-gray-200 cursor-pointer text-xl pt-1.5 pb-1.5 pr-0 pl-3 hover:bg-gray-300 ${isFirst} ${isLast}`}
+                    onClick={() => {
+                      onSuggestionsClicked(city);
+                    }}
+                  >
+                    <span>{city}</span>
+                  </li>
                 );
               })}
             </ol>
-        )}
-        <div>
-          <DropdownMenu
-              title={'Countries'}
-              selectedValue={selectedCountry}
-              values={countries.map((country) => country.name.toString())}
-              callback={(value) => onCountryChange?.(value)}
-          />
+          )}
         </div>
+        <DropdownMenu
+          title={'Countries'}
+          selectedValue={selectedCountry}
+          values={countries.map((country) => country.name.toString())}
+          callback={(value) => onCountryChange?.(value)}
+        />
       </div>
 
       <div className={'flex ml-5 gap-2'}>
         <LocationWithRadius
-            onLocationAsked={onLocationAsked}
-            onRadiusChange={onRadiusChange}
-            showRadius={showRadius}
-            currentRadius={currentRadius}
+          onLocationAsked={onLocationAsked}
+          onRadiusChange={onRadiusChange}
+          showRadius={showRadius}
+          currentRadius={currentRadius}
         />
         <div className={'flex flex-col gap-2'}>
           <button

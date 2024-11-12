@@ -30,7 +30,7 @@ describe('Search', () => {
     const { getByTestId } = setup({
       totalNumberOfPages: 2,
       currentPage: 1,
-      cities: [{ id: 0, country: 'aCountry', name: 'aName', altNames: ['aAltName'] }],
+      cities: [{ id: 0, country: 'aCountry', name: 'aName', altNames: ['aAltName'], admins: [''] }],
     });
 
     expect(getByTestId('city-0')).toBeInTheDocument();
@@ -40,7 +40,7 @@ describe('Search', () => {
     const { handleNextPageClick, handlePreviousPageClick, getByTestId } = setup({
       totalNumberOfPages: 2,
       currentPage: 1,
-      cities: [{ id: 0, country: 'aCountry', name: 'aName', altNames: ['aAltName'] }],
+      cities: [{ id: 0, country: 'aCountry', name: 'aName', altNames: ['aAltName'], admins: [''] }],
     });
 
     fireEvent.click(getByTestId('arrow-right'));
@@ -53,7 +53,7 @@ describe('Search', () => {
     const { handleNextPageClick, handlePreviousPageClick, getByTestId } = setup({
       totalNumberOfPages: 2,
       currentPage: 2,
-      cities: [{ id: 0, country: 'aCountry', name: 'aName', altNames: ['aAltName'] }],
+      cities: [{ id: 0, country: 'aCountry', name: 'aName', altNames: ['aAltName'], admins: [''] }],
     });
 
     fireEvent.click(getByTestId('arrow-left'));

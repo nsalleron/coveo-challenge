@@ -45,8 +45,26 @@ public class CityRepository {
                 if (altNames.length == 1 && altNames[0].isEmpty()) {
                     altNames = new String[0];
                 }
+                final Integer id = Integer.parseInt(fields[0]);
+                final String name = fields[1];
+                final String country = fields[17].replace("_", " ");
+                final Float latitude = Float.parseFloat(fields[4]);
+                final Float longitude = Float.parseFloat(fields[5]);
+                final List<String> admins = new ArrayList<>();
+                admins.add(fields[10]);
+                admins.add(fields[11]);
+                admins.add(fields[12]);
+                admins.add(fields[13]);
+
                 // Populate the city object with the fields.
-                CityRecord city = new CityRecord(Integer.parseInt(fields[0]), fields[1], fields[17].replace("_", " "), altNames, Float.parseFloat(fields[4]), Float.parseFloat(fields[5]));
+                CityRecord city = new CityRecord(
+                        id,
+                        name,
+                        country,
+                        altNames,
+                        latitude,
+                        longitude,
+                        admins.stream().distinct().toList());
 
                 // Add the city to the return value.
                 if (cities.get(city.id()) == null) {

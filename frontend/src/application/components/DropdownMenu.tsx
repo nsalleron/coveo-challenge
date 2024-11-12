@@ -27,18 +27,17 @@ function DropdownMenu<T extends ReactNode>({ title, unit, values, selectedValue,
             <MenuItem key={key}>
               <button
                 onClick={() => {
-
                   if (selectedValue !== value) {
-                      setCurrentTitle(`${title} ${value} ${unit !== undefined ? unit : ''}`);
+                    setCurrentTitle(`${title} ${value} ${unit !== undefined ? unit : ''}`);
                     return callback?.(value);
                   } else {
-                      setCurrentTitle(`${title}`);
+                    setCurrentTitle(`${title}`);
                     return callback?.(null);
                   }
                 }}
                 className='groupflex w-full items-center gap-2 rounded-lg py-1.5 px-1 data-[focus]:bg-white/10'
               >
-                {value !== "undefined" ? value : ""} {unit}
+                {value !== 'undefined' ? value : ''} {unit}
               </button>
             </MenuItem>
           );
