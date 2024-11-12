@@ -1,38 +1,55 @@
-import {City} from "./components/Results/Results";
-import {useQuery} from "@tanstack/react-query";
-import {LatLngCoords} from "./utils";
+import { City } from './components/Results/Results';
+import { useQuery } from '@tanstack/react-query';
+import { LatLngCoords } from './utils';
 
 const initialData = {
-    cities: [] as City[],
-    totalNumberOfPages: 0,
-    page: 0,
+  cities: [] as City[],
+  totalNumberOfPages: 0,
+  page: 0,
 };
 
-function appendUserLocation(searchUrl: URL, position: LatLngCoords) {
-    searchUrl.searchParams.append('latitude', `${position.latitude}`)
-    searchUrl.searchParams.append('longitude', `${position.longitude}`)
-}
+export default function useSearch(
+  search: string,
+  currentPage: number,
+  pageSize: number,
+  position: LatLngCoords | null,
+  radius: number | null,
+) {
+  return useQuery({
+    queryKey: ['query', search, currentPage, pageSize, position, radius],
+    initialData,
+    queryFn: async () => {
+      if (search.length === 0) {
+        return initialData;
+      }
 
-export default function useSearch(currentPage: number, position: LatLngCoords | null, search: string) {
-    return useQuery({
-        queryKey: ['query', search, currentPage],
-        initialData,
-        queryFn: async () => {
-            if (search.length === 0) {
-                return initialData;
-            }
+      const query = search.toLowerCase();
+      const suggestionsUrl = new URL(`${process.env.REACT_APP_API_URL}/suggestions`);
 
-            const q = search.toLowerCase();
-            const searchUrl = new URL(`${process.env.REACT_APP_API_URL}/suggestions`);
-            searchUrl.searchParams.append('q', q);
-            searchUrl.searchParams.append('page', `${currentPage - 1}`);
-            if (position) {
-                appendUserLocation(searchUrl, position);
-            }
-            console.log(searchUrl.href)
-            const {cities, totalNumberOfPages, page} = await fetch(searchUrl.href).then((response) => response.json());
+      let positionObj = {};
+      if (position && radius) {
+        positionObj = {
+          latitude: position.latitude,
+          longitude: position.longitude,
+          radius,
+        };
+      }
 
-            return {cities, totalNumberOfPages, page: page + 1};
+      const { cities, totalNumberOfPages, page } = await fetch(suggestionsUrl.href, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
-    });
+        body: JSON.stringify({
+          query,
+          page: currentPage - 1,
+          pageSize: pageSize,
+          ...positionObj,
+        }),
+      }).then((response) => response.json());
+
+      return { cities, totalNumberOfPages, page: page + 1 };
+    },
+  });
 }

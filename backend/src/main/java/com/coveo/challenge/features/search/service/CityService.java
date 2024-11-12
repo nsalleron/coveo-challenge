@@ -1,5 +1,6 @@
 package com.coveo.challenge.features.search.service;
 
+import com.coveo.challenge.core.LatLngUtils;
 import com.coveo.challenge.features.search.FrontSuggestionsRecord;
 import com.coveo.challenge.features.search.repository.CityRecord;
 import com.coveo.challenge.features.search.repository.CityRepository;
@@ -10,13 +11,13 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 @Service
 public class CityService {
-    public static final int LONGITUDE_THRESH = 20;
-    public static final int LATITUDE_THRESH = 10;
+    public static final int MAX_DEFAULT_RADIUS = 100;
     public static final int MAX_PAGE_SIZE = 5;
 
     private final CityRepository cityRepository;
@@ -27,35 +28,65 @@ public class CityService {
         this.cityRepository = cityRepository;
     }
 
-    public FrontSuggestionsRecord retrieveCities(String q, Integer page, Float latitude, Float longitude) {
-        Stream<CityRecord> citiesStream = cityRepository.getCities().stream().filter(fromName(q.toLowerCase()));
-        citiesStream = filterAccordingToLatLng(latitude, longitude, citiesStream);
-        List<CityRecord> cities = citiesStream.toList();
-
-        final boolean isPaginated = page != null;
-        return isPaginated ? getPaginatedSuggestions(page, cities) : new FrontSuggestionsRecord(null, null, cities);
+    private Integer retrieveCurrentPage(Optional<Integer> page) {
+        return page.map(integer -> integer < 0 ? Integer.valueOf(0) : integer).orElse(null);
     }
 
-    private static Stream<CityRecord> filterAccordingToLatLng(Float latitude, Float longitude, Stream<CityRecord> citiesStream) {
-        if (latitude != null)
-            citiesStream = citiesStream.filter(city -> Math.abs(city.latitude() - latitude) < LATITUDE_THRESH);
-        if (longitude != null)
-            citiesStream = citiesStream.filter(city -> Math.abs(city.longitude() - longitude) < LONGITUDE_THRESH);
+    public FrontSuggestionsRecord retrieveCities(Optional<String> query,
+                                                 Optional<Integer> page,
+                                                 Optional<Float> latitude,
+                                                 Optional<Float> longitude,
+                                                 Optional<Integer> radius,
+                                                 Optional<Integer> pageSize) {
+
+        if(query.isEmpty()) {
+            return new FrontSuggestionsRecord(null, null, Collections.emptyList());
+        }
+
+        Integer currentPage = retrieveCurrentPage(page);
+        Integer currentRadius = retrieveCurrentRadius(radius);
+        Integer currentpageSize = retrieveCurrentPageSize(pageSize);
+
+        Stream<CityRecord> citiesStream = cityRepository.getCities().stream().filter(fromName(query.get().toLowerCase()));
+        citiesStream = filterAccordingToLatLng(latitude, longitude, currentRadius, citiesStream);
+        List<CityRecord> cities = citiesStream.toList();
+
+        return page.isPresent() ? getPaginatedSuggestions(currentPage, currentpageSize, cities) : new FrontSuggestionsRecord(null, null, cities);
+    }
+
+    private Integer retrieveCurrentPageSize(Optional<Integer> pageSize) {
+        if(pageSize.isPresent()) {
+            if(pageSize.get() <= 0) {
+                return MAX_PAGE_SIZE;
+            }
+            return pageSize.get();
+        }
+        return MAX_PAGE_SIZE;
+    }
+
+    private Integer retrieveCurrentRadius(Optional<Integer> radius) {
+        return radius.map(Math::abs).orElse(MAX_DEFAULT_RADIUS);
+    }
+
+    private static Stream<CityRecord> filterAccordingToLatLng(Optional<Float> latitude, Optional<Float> longitude, Integer radius, Stream<CityRecord> citiesStream) {
+        if (latitude.isPresent() && longitude.isPresent()) {
+            citiesStream = citiesStream.filter(city -> LatLngUtils.calculateDistance(city.latitude(), city.longitude(), latitude.get(), longitude.get()) < radius);
+        }
         return citiesStream;
     }
 
-    private FrontSuggestionsRecord getPaginatedSuggestions(Integer page, List<CityRecord> cities) {
+    private FrontSuggestionsRecord getPaginatedSuggestions(Integer page, Integer pageSize, List<CityRecord> cities) {
         final Integer currentPage = page < 0 ? 0 : page;
         return new FrontSuggestionsRecord(
                 currentPage,
-                getTotalNumberOfPages(cities),
-                getSubListAccordingToCurrentPage(currentPage, cities)
+                getTotalNumberOfPages(cities, pageSize),
+                getSubListAccordingToCurrentPage(currentPage, cities, pageSize)
         );
     }
 
-    private List<CityRecord> getSubListAccordingToCurrentPage(Integer currentPage, List<CityRecord> cities) {
-        if (currentPage < getTotalNumberOfPages(cities)) {
-            cities = retrieveSublistOfCities(currentPage, cities);
+    private List<CityRecord> getSubListAccordingToCurrentPage(Integer currentPage, List<CityRecord> cities, Integer pageSize) {
+        if (currentPage < getTotalNumberOfPages(cities, pageSize)) {
+            cities = retrieveSublistOfCities(currentPage, pageSize, cities);
         } else {
             cities = Collections.emptyList();
             logger.warn("no cities found");
@@ -75,13 +106,14 @@ public class CityService {
         return name.toLowerCase().contains(q);
     }
 
-    private Integer getTotalNumberOfPages(List<CityRecord> cities) {
-        return cities.size() % MAX_PAGE_SIZE == 0 ? cities.size() / MAX_PAGE_SIZE : (cities.size() / MAX_PAGE_SIZE) + 1;
+    private Integer getTotalNumberOfPages(List<CityRecord> cities, Integer pageSize) {
+
+        return cities.size() % pageSize == 0 ? cities.size() / pageSize : (cities.size() / pageSize) + 1;
     }
 
-    private static List<CityRecord> retrieveSublistOfCities(Integer currentPage, List<CityRecord> cities) {
-        final int endIndex = Math.min((currentPage * MAX_PAGE_SIZE + MAX_PAGE_SIZE), cities.size());
-        final int startIndex = (currentPage * MAX_PAGE_SIZE);
+    private static List<CityRecord> retrieveSublistOfCities(Integer currentPage, Integer pageSize, List<CityRecord> cities) {
+        final int endIndex = Math.min((currentPage * pageSize + pageSize), cities.size());
+        final int startIndex = (currentPage * pageSize);
         cities = cities.subList(startIndex, endIndex);
         return cities;
     }

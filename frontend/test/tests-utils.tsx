@@ -4,8 +4,8 @@ export const withMemoryRouter = (child: JSX.Element, initialEntries?: string[]):
   <MemoryRouter
     basename='/'
     future={{
-        v7_startTransition: true,
-        v7_relativeSplatPath: true,
+      v7_startTransition: true,
+      v7_relativeSplatPath: true,
     }}
     initialEntries={initialEntries?.map((e) => {
       if (e.startsWith('/')) {

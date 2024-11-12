@@ -11,16 +11,23 @@ The main changes to the backend include:
     - **`CityRepository`**: responsible for reading and parsing the CSV file of cities, with more robust resource handling and warnings for duplicates.
     - **`CityService`**: handles the business logic of retrieving and filtering cities based on search parameters, with support for pagination and geographic filtering (latitude and longitude).
     - **`SuggestionsController`**: REST controller, simplified to delegate business logic to `CityService`.
-  - **Pagination and Filtering**: The new structure improves pagination in search results, controls the current page, and provides filtering based on geolocation (latitude and longitude).
-
+  - **Pagination and Filtering**: The new structure improves pagination in search results, controls the current page, and provides filtering based on geolocation (latitude and longitude) + radius + page size.
 - **Logs**: Methods use `Logger` for traceability and handle exceptions more precisely, especially for data loading and request errors.
-
+- **RequestMapping to PostMapping**: To be more precise in the request type we make and the return Content-type
+- **Remove default value for lat and lng**: To have more results corresponding to the input of the user.
+- **Checks**:
+  - page < 0
+  - pageSize <= 0
+- **Stream**:
+  - Filter / map
+- **Repository**: Parsing at the beginning of the app. Only necessary fields are parsed. Warn if there is some duplicated keys
+- Use of Data class
 - **Additional Dependencies**:
   - Added OpenAPI with `springdoc-openapi-starter-webmvc-ui` to document and explore the API, facilitating development and testing.
 - **Structure**
   - Adopted a Controller-Service-Repository pattern for clearer separation of concerns.
 - **Tests**
-  - Added unit tests for new classes
+  - Added unit tests all the classes
 
 ## 2. Frontend Changes
 
@@ -43,8 +50,4 @@ The frontend improvements focus on enhancing the user experience and modernizing
 - **Testing Improvements**
   - Added tests for all components to ensure functionality across the frontend.
 
-TODO
-Backend: Tresh radius à faire 5 / 10 / 15 / 20 km
-Backend: Define SIZE page
-Backend: POST request
-Frontend: Consommation API et génération du code depuis cette API OpenAPI
+TODO: API Code generation from Swagger document.
