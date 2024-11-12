@@ -21,13 +21,13 @@ public class SuggestionsController {
 
     @CrossOrigin(origins = "*")
     @GetMapping("/suggestions")
-    public FrontSuggestionsRecord suggestions(@RequestParam String q,
+    public FrontSuggestionsRecord suggestions(@RequestParam String query,
                                               @RequestParam(required = false) Float latitude,
                                               @RequestParam(required = false) Float longitude,
                                               @RequestParam(required = false) Integer page) {
-        logger.info("--- Entering suggestions endpoint parameters are: q={}, latitude={}, longitude={}, page={}", q, latitude, longitude, page);
+        logger.info("--- Entering suggestions endpoint parameters are: q={}, latitude={}, longitude={}, page={}", query, latitude, longitude, page);
 
         Integer currentPage = page != null && page < 0 ? Integer.valueOf(0) : page;
-        return cityServices.retrieveCities(q, currentPage, latitude, longitude);
+        return cityServices.retrieveCities(query, currentPage, latitude, longitude);
     }
 }

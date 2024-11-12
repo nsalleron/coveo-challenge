@@ -4,6 +4,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import '@testing-library/jest-dom';
+import {withMemoryRouter} from "../../../test/tests-utils";
 jest.mock('@tanstack/react-query', () => ({
   useQuery: jest.fn(),
 }));
@@ -25,7 +26,7 @@ describe('Search', () => {
       data: { cities: [{ id: 1, country: 'aCountry', name: 'aName' }] },
     });
 
-    const { getByTestId } = render(<Search />);
+    const { getByTestId } = render(withMemoryRouter(<Search />, ["/?query=aNam&latitude=48.7&longitude=2.3&page=1&show=true&filter=true"]));
 
     expect(getByTestId('search-bar')).toBeInTheDocument();
   });
@@ -41,7 +42,7 @@ describe('Search', () => {
       },
     });
 
-    const { getByTestId } = render(<Search />);
+    const { getByTestId } = render(withMemoryRouter(<Search /> ));
 
     expect(getByTestId('search-button').firstChild).toHaveClass('animate-spin');
   });
@@ -55,7 +56,7 @@ describe('Search', () => {
       data: undefined,
     });
 
-    const { getByTestId } = render(<Search />);
+    const { getByTestId } = render(withMemoryRouter(<Search />));
 
     expect(getByTestId('error')).toBeInTheDocument();
   });

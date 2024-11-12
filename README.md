@@ -1,6 +1,4 @@
-The latest commit [#2](https://github.com/nsalleron/coveo-challenge/commit/376b253183f5fc1570bd17e7be490337b1a89276) introduces a major refactor of both the backend and frontend, enhancing the project's structure and functionality, especially for managing city suggestions within an application.
-
-I'm sorry for only having a single commit to show you, which prevents you from seeing how the refactoring was carried out step by step. I wasn't aware that I needed to submit code, so I panicked a bit and focused on delivering something as quickly as possible. Here is a list of the major changes made to the project.
+The commit [#2](https://github.com/nsalleron/coveo-challenge/commit/376b253183f5fc1570bd17e7be490337b1a89276) introduces a major refactor of both the backend and frontend, enhancing the project's structure and functionality, especially for managing city suggestions within an application. I'm sorry for only having a single commit to show you for such a big refactoring, which prevents you from seeing how the refactoring was carried out step by step. I wasn't aware that I needed to submit code, so I panicked a bit and focused on delivering something as quickly as possible. Here is a list of the major changes made to the project.
 
 ## 1. Backend Changes
 
@@ -19,6 +17,10 @@ The main changes to the backend include:
 
 - **Additional Dependencies**:
   - Added OpenAPI with `springdoc-openapi-starter-webmvc-ui` to document and explore the API, facilitating development and testing.
+- **Structure**
+  - Adopted a Controller-Service-Repository pattern for clearer separation of concerns.
+- **Tests**
+  - Added unit tests for new classes
 
 ## 2. Frontend Changes
 
@@ -28,25 +30,16 @@ The frontend improvements focus on enhancing the user experience and modernizing
   - New setup to use browser permissions (`cypress-browser-permissions`) for geolocation, enabling simulated location-based searches.
   - End-to-end (`e2e`) and component tests to verify search and pagination functionalities, including validation of search results and navigation between pages.
   - Custom Commands: Added `mockGeolocation` command to simulate geolocation during tests.
-
 - **Dependency Updates**:
-  - **Jest**: New Jest configuration for unit tests using modern environments.
-  - **TypeScript and Babel**: Updated support for TypeScript and Babel with modern presets for improved compatibility with React and TypeScript.
- 
+  - **React**: 16 -> 18
+  - **Jest**: New Jest configuration for unit tests. 
+  - **Lodash / React Router / React Query / Testing Library **
 - **Removal of CSS Files**
-  - previous css files are removed and tailwindcss was added to the project.
+  - Replaced CSS files with Tailwind CSS, offering a more flexible and maintainable styling approach.
+- **Structure**
+  - Adopted feature-based grouping for components, even though there is currently only one main feature.
+- **Hooks**
+  - Developed new hooks, such as debounce and objectState, to optimize network call management and local component state handling.
+- **Testing Improvements**
+  - Added tests for all components to ensure functionality across the frontend.
     
-- **Project reoganisation**
-  - TODO
-
-- 
-
-## 3. Summary of Improvements
-
-This commit brings significant enhancements in terms of:
-
-- **Modularity**: Separation of responsibilities into dedicated classes for better maintainability.
-- **Testing and Quality**: E2E, unit tests, and Cypress support to better validate functionality.
-- **User Experience**: Optimized pagination and geolocation support in search.
-
-Overall, this commit modernizes the codebase and improves the quality, structure, and reliability of the search features within the application&#8203;:contentReference[oaicite:0]{index=0}.
