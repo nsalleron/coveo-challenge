@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class SuggestionsController {
     private final CityService cityServices;
@@ -16,17 +18,14 @@ public class SuggestionsController {
         this.cityServices = cityServices;
     }
 
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = {"http://localhost:3000", "https://search.coveo.com"})
     @PostMapping("/suggestions")
     public FrontSuggestionsRecord suggestions(@RequestBody SuggestionsDtoRecord suggestionsDtoRecord) {
         logger.info("--- Entering suggestions endpoint parameters are: {}", suggestionsDtoRecord);
         return cityServices.retrieveCities(suggestionsDtoRecord.query(),
-                suggestionsDtoRecord.page(),
-                suggestionsDtoRecord.latitude(),
-                suggestionsDtoRecord.longitude(),
-                suggestionsDtoRecord.radius(),
-                suggestionsDtoRecord.pageSize(),
-                suggestionsDtoRecord.selectedCountry()
+                suggestionsDtoRecord.filters(),
+                suggestionsDtoRecord.pageInfos()
         );
     }
 }
+

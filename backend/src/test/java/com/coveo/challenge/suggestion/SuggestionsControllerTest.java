@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import javax.swing.text.html.Option;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +25,7 @@ import static org.mockito.Mockito.*;
 public class SuggestionsControllerTest {
 
     @Autowired
-    private SuggestionsController controller; //DI
+    private SuggestionsController controller;
 
     @MockBean
     private CityService cityService;
@@ -33,18 +35,28 @@ public class SuggestionsControllerTest {
         assertThat(controller).isNotNull();
     }
 
-
-
     @Test
     public void givenSearchInfoThenSuggestionsShouldCorrectlyBePassed() {
-        final Integer currentPage = Integer.MAX_VALUE;
-        when(cityService.retrieveCities(Optional.of("Qu"), Optional.of(Integer.MAX_VALUE), Optional.of(1.0F), Optional.of(2.0F), Optional.of(100), Optional.of(5))).thenReturn(new FrontSuggestionsRecord(currentPage, 3, SuggestionHelper.CITIES));
+        final Integer currentPage = 0;
+        final SuggestionsDtoRecord.Filters filters = new SuggestionsDtoRecord.Filters(
+                Optional.of(new SuggestionsDtoRecord.Filters.Geolocation(1.0F, 2.0F, Optional.empty())),
+                Optional.of(Collections.emptyList()),
+                Optional.of(Collections.emptyList()));
+        final SuggestionsDtoRecord.PagesInfo pagesInfo = new SuggestionsDtoRecord.PagesInfo(Optional.of(currentPage), Optional.of(5));
 
-        final FrontSuggestionsRecord searchResult = controller.suggestions(new SuggestionsDtoRecord(Optional.of("Qu"), Optional.of(1.0F), Optional.of(2.0F), Optional.of(currentPage), Optional.of(100), Optional.of(5)));
 
-        assertEquals(Integer.MAX_VALUE, searchResult.page());
+        final FrontSuggestionsRecord result = new FrontSuggestionsRecord(
+                new FrontSuggestionsRecord.Pagination(0, 3),
+                SuggestionHelper.CITIES,
+                new FrontSuggestionsRecord.FrontSuggestionsFilters(Collections.emptyList(), Collections.emptyList()));
 
-        verify(cityService).retrieveCities(Optional.of("Qu"), Optional.of(Integer.MAX_VALUE), Optional.of(1.0F), Optional.of(2.0F), Optional.of(100), Optional.of(5));
+        when(cityService.retrieveCities(Optional.of("Qu"), filters, pagesInfo)).thenReturn(result);
+
+        final FrontSuggestionsRecord searchResult = controller.suggestions(new SuggestionsDtoRecord(Optional.of("Qu"), filters, pagesInfo));
+
+        assertEquals(currentPage, searchResult.pagination().page());
+
+        verify(cityService).retrieveCities(Optional.of("Qu"), filters, pagesInfo);
 
     }
 }

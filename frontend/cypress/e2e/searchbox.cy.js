@@ -45,7 +45,7 @@ context('Searchbox', () => {
 
     displayResultAndNextPage();
 
-    cy.get('[data-testid=count-pages]').contains('2 / 18');
+    cy.get('[data-testid=count-pages]').contains('2 / 19');
   });
 
   it('should allow previous paginated page', () => {
@@ -53,6 +53,6 @@ context('Searchbox', () => {
 
     displayResultAndNextPage();
     cy.get('[data-testid=arrow-left]').click();
-    cy.get('[data-testid=count-pages]').contains('1 / 18');
+    cy.get('[data-testid=count-pages]').contains('1 / 19');
   });
 });

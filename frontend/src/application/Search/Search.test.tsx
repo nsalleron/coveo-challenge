@@ -12,6 +12,18 @@ jest.mock('@tanstack/react-query', () => ({
 
 const mockedUseQuery = useQuery as jest.MockedFn<typeof useQuery>;
 
+const defaultSearchFixture = {
+  pagination: {
+    page: 0,
+    totalNumberOfPages: 1,
+  },
+  cities: [{ id: 1, country: 'aCountry', name: 'aName', altNames: [], admins: [] }],
+  filters: {
+    countries: [{ id: 0, name: 'aCountryName' }],
+    admins: [{ id: 0, name: 'aAdminName' }],
+  },
+};
+
 describe('Search', () => {
   const original = jest.requireActual('@tanstack/react-query');
   beforeEach(() => {
@@ -24,10 +36,7 @@ describe('Search', () => {
       isLoading: false,
       error: null,
       isError: false,
-      data: {
-        cities: [{ id: 1, country: 'aCountry', name: 'aName', altNames: [] }],
-        countries: [{ id: 0, name: 'aCountryName' }],
-      },
+      data: defaultSearchFixture,
     });
 
     const { getByTestId } = render(
@@ -43,10 +52,7 @@ describe('Search', () => {
       isLoading: true,
       error: null,
       isError: false,
-      data: {
-        cities: [{ id: 1, country: 'aCountry', name: 'aName', altNames: [] }],
-        countries: [{ id: 0, name: 'aCountryName' }],
-      },
+      data: defaultSearchFixture,
     });
 
     const { getByTestId } = render(withMemoryRouter(<Search />));

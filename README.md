@@ -65,12 +65,12 @@ The frontend improvements focus on enhancing the user experience and modernizing
 - **Feature:** Display of alternative names.
 
 **Release 1.0.2:**
-- **Bugfix / Refactor:** Change from `RequestMapping` to `PostMapping`.
+- **Bugfix / Refactor:** Change from `RequestMapping` to `PostMapping`. This change include to change the calling method to POST. 
 - **Tech / Refactor:** Add logs via `loggerFactory`.
 - **Refactor:** Create a service with separation of concerns, establishing smaller methods for each action + service-level testing.
 
 - **Feature:** Remove default values for latitude/longitude for more results.
-- **Feature:** Add filters in the search bar to allow sharing of search links.
+- **Feature:** Add filters in the url search bar to allow sharing of search links.
 - **Feature:** Integrate React Router + add an error page for invalid URLs.
 - **Feature:** Country filter and corresponding tests.
 - **Feature:** Display of admins.
@@ -90,6 +90,6 @@ The frontend improvements focus on enhancing the user experience and modernizing
 - **Tech:** Migrate CSS files to TailwindCSS.
 - **Tech:** Add hooks `useDebounce`, `useObjectState`, `useApiSearch` for refactoring and optimisation.
 
-- **Feature (TODO):** Custom definition of page SIZE.
+- **Feature :** Custom definition of page SIZE.
 - **Feature (TODO):** Display elevation.
 - **Feature (TODO):** Multi-criteria filters.

@@ -1,10 +1,10 @@
-import { City, Results } from './Results';
+import { Results, ResultsProps } from './Results';
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import '@testing-library/jest-dom';
 
 describe('Search', () => {
-  const setup = (props: { totalNumberOfPages: number; currentPage: number; cities: City[] }) => {
+  const setup = (props: Omit<ResultsProps, 'onNext' | 'onPrevious'>) => {
     const handleNextPageClick = jest.fn();
     const handlePreviousPageClick = jest.fn();
     const resultList = <Results onNext={handleNextPageClick} onPrevious={handlePreviousPageClick} {...props} />;
@@ -18,8 +18,10 @@ describe('Search', () => {
   };
   it('should displays empty state when there are no cities', async () => {
     const { getByTestId } = setup({
-      totalNumberOfPages: 2,
-      currentPage: 1,
+      pagination: {
+        totalNumberOfPages: 2,
+        page: 1,
+      },
       cities: [],
     });
 
@@ -28,8 +30,10 @@ describe('Search', () => {
 
   it('should displays a city when there is at least one city', async () => {
     const { getByTestId } = setup({
-      totalNumberOfPages: 2,
-      currentPage: 1,
+      pagination: {
+        totalNumberOfPages: 2,
+        page: 1,
+      },
       cities: [{ id: 0, country: 'aCountry', name: 'aName', altNames: ['aAltName'], admins: [''] }],
     });
 
@@ -38,8 +42,10 @@ describe('Search', () => {
 
   it('should allows clicking on the next page', async () => {
     const { handleNextPageClick, handlePreviousPageClick, getByTestId } = setup({
-      totalNumberOfPages: 2,
-      currentPage: 1,
+      pagination: {
+        totalNumberOfPages: 2,
+        page: 1,
+      },
       cities: [{ id: 0, country: 'aCountry', name: 'aName', altNames: ['aAltName'], admins: [''] }],
     });
 
@@ -51,8 +57,10 @@ describe('Search', () => {
 
   it('should allows clicking on the previous page', async () => {
     const { handleNextPageClick, handlePreviousPageClick, getByTestId } = setup({
-      totalNumberOfPages: 2,
-      currentPage: 2,
+      pagination: {
+        totalNumberOfPages: 2,
+        page: 1,
+      },
       cities: [{ id: 0, country: 'aCountry', name: 'aName', altNames: ['aAltName'], admins: [''] }],
     });
 

@@ -2,29 +2,15 @@ import * as React from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { City, Pagination } from '../../useSearchApi';
 
-export interface City {
-  id: number;
-  country: string;
-  name: string;
-  altNames: string[];
-  admins: string[];
-}
-
-type ResultsProps = {
-  totalNumberOfPages: number;
-  currentPage: number;
+export type ResultsProps = {
+  pagination: Pagination;
   cities: City[];
   onNext: () => void;
   onPrevious: () => void;
 };
-export const Results: React.FunctionComponent<ResultsProps> = ({
-  totalNumberOfPages,
-  currentPage,
-  cities,
-  onNext,
-  onPrevious,
-}) => {
+export const Results: React.FunctionComponent<ResultsProps> = ({ cities, pagination, onNext, onPrevious }) => {
   if (cities.length === 0) {
     return (
       <p data-testid={'empty-state'} className={'text-white pt-6'}>
@@ -44,7 +30,7 @@ export const Results: React.FunctionComponent<ResultsProps> = ({
         <button data-testid='arrow-left' onClick={onPrevious}>
           <FontAwesomeIcon icon={faArrowLeft} height={24} width={24} />
         </button>
-        <div data-testid='count-pages'> {`${currentPage} / ${totalNumberOfPages}`} </div>
+        <div data-testid='count-pages'> {`${pagination.page} / ${pagination.totalNumberOfPages}`} </div>
 
         <button data-testid='arrow-right' onClick={onNext}>
           <FontAwesomeIcon icon={faArrowRight} height={24} width={24} />

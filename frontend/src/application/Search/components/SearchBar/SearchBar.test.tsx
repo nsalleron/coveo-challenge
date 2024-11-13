@@ -5,20 +5,22 @@ import '@testing-library/jest-dom';
 
 describe('SearchBar', () => {
   const props = {
-    placeholder: 'Search...',
-    currentSearch: '',
+    filters: {
+      search: '',
+      cities: ['New York', 'Paris'],
+      countries: [
+        { id: 0, name: 'America' },
+        { id: 1, name: 'France' },
+      ],
+      selectedCountry: null,
+      currentPageSize: 0,
+      currentRadius: undefined,
+    },
+    isLoading: false,
     onSearchButtonClicked: jest.fn(),
     onSearchTextChange: jest.fn(),
     onSuggestionsClicked: jest.fn(),
-    cities: ['New York', 'Paris'],
-    countries: [
-      { id: 0, name: 'America' },
-      { id: 1, name: 'France' },
-    ],
     onLocationAsked: jest.fn(),
-    isLoading: false,
-    currentCountry: null,
-    currentPage: 0,
     onRadiusChange: jest.fn(),
     onPageSizeChange: jest.fn(),
     onCountryChange: jest.fn(),
