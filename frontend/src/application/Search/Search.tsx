@@ -6,7 +6,7 @@ import useObjectState from '../core/hooks/useObjectState';
 import useDebounce from '../core/hooks/useDebounce';
 import { askLocation } from '../core/utils/location';
 import { useSearchParams } from 'react-router-dom';
-import useSearch, { City } from './useSearchApi';
+import useSearch, {City, FrontCity} from './useSearchApi';
 import {
   LatLngCoords,
   retrievePageFromSearchParams,
@@ -116,7 +116,7 @@ const Search: React.FunctionComponent = () => {
           <SearchBar
             filters={{
               search: state.search,
-              cities: state.showResults && data.cities !== undefined ? [] : data.cities?.map((c: City) => c.name),
+              cities: state.showResults && data.cities !== undefined ? [] : data.cities?.map((c: FrontCity) => c.city.name),
               countries: data.filters.countries,
               selectedCountry: state.selectedCountry,
               currentPageSize: state.pageSize,

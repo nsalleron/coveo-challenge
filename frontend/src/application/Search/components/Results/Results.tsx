@@ -2,11 +2,11 @@ import * as React from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { City, Pagination } from '../../useSearchApi';
+import { FrontCity, Pagination} from '../../useSearchApi';
 
 export type ResultsProps = {
   pagination: Pagination;
-  cities: City[];
+  cities: FrontCity[];
   onNext: () => void;
   onPrevious: () => void;
 };
@@ -23,7 +23,7 @@ export const Results: React.FunctionComponent<ResultsProps> = ({ cities, paginat
     <div data-testid='result-list' className='w-full'>
       <ol className={'flex flex-col m-6 gap-2'}>
         {cities.map((c, i) => (
-          <CityListItem key={i} city={c} />
+          <CityListItem key={i} cityWithScore={c} />
         ))}
       </ol>
       <div className={'flex text-white justify-between items-center mx-10'}>
@@ -41,10 +41,11 @@ export const Results: React.FunctionComponent<ResultsProps> = ({ cities, paginat
 };
 
 type CityListItemProps = {
-  city: City;
+  cityWithScore: FrontCity;
 };
 
-const CityListItem: React.FunctionComponent<CityListItemProps> = ({ city }) => {
+const CityListItem: React.FunctionComponent<CityListItemProps> = ({ cityWithScore }) => {
+  let { city, score } = cityWithScore;
   let admins = city.admins.join(', ');
 
   return (
@@ -57,6 +58,7 @@ const CityListItem: React.FunctionComponent<CityListItemProps> = ({ city }) => {
       <img src='/images/city.webp' className='h-24 w-24 float-left' alt={`${city.name} city logo`} />
       <div className='flex justify-between px-10 items-start flex-grow'>
         <div className={'flex flex-col items-start w-1/2'}>
+          <span>Search Score: {score}</span>
           <span>Name: {city.name}</span>
           <span>Country: {city.country}</span>
           <span>Admins: {admins.substr(0, admins.length - 2)}</span>

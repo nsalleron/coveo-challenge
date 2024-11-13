@@ -19,12 +19,16 @@ export type Filter = {
   name: string;
 };
 
+export type FrontCity = {
+ score: number, city: City
+}
+
 export type Filters = {
   countries: Filter[];
   admins: Filter[];
 };
 
-const initialData: { pagination: Pagination; cities: City[]; filters: Filters } = {
+const initialData: { pagination: Pagination; cities: FrontCity[]; filters: Filters } = {
   pagination: {
     totalNumberOfPages: 0,
     page: 0,

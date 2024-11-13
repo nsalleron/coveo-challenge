@@ -4,7 +4,7 @@
 package com.coveo.challenge.suggestion;
 
 import com.coveo.challenge.features.search.controller.SuggestionsDtoRecord;
-import com.coveo.challenge.features.search.service.CityService;
+import com.coveo.challenge.features.search.service.SuggestionsService;
 import com.coveo.challenge.features.search.service.FrontSuggestionsRecord;
 import com.coveo.challenge.features.search.controller.SuggestionsController;
 import com.coveo.challenge.suggestion.helper.SuggestionHelper;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import javax.swing.text.html.Option;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -28,7 +27,7 @@ public class SuggestionsControllerTest {
     private SuggestionsController controller;
 
     @MockBean
-    private CityService cityService;
+    private SuggestionsService suggestionsService;
 
     @Test
     void contextLoads() {
@@ -47,16 +46,16 @@ public class SuggestionsControllerTest {
 
         final FrontSuggestionsRecord result = new FrontSuggestionsRecord(
                 new FrontSuggestionsRecord.Pagination(0, 3),
-                SuggestionHelper.CITIES,
+                SuggestionHelper.FRONT_CITIES,
                 new FrontSuggestionsRecord.FrontSuggestionsFilters(Collections.emptyList(), Collections.emptyList()));
 
-        when(cityService.retrieveCities(Optional.of("Qu"), filters, pagesInfo)).thenReturn(result);
+        when(suggestionsService.retrieveSuggestions(Optional.of("Qu"), filters, pagesInfo)).thenReturn(result);
 
         final FrontSuggestionsRecord searchResult = controller.suggestions(new SuggestionsDtoRecord(Optional.of("Qu"), filters, pagesInfo));
 
         assertEquals(currentPage, searchResult.pagination().page());
 
-        verify(cityService).retrieveCities(Optional.of("Qu"), filters, pagesInfo);
+        verify(suggestionsService).retrieveSuggestions(Optional.of("Qu"), filters, pagesInfo);
 
     }
 }
