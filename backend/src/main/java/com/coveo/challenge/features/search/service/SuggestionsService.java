@@ -16,13 +16,13 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 @Service
-public class CityService {
+public class SuggestionsService {
     public static final int MAX_DEFAULT_RADIUS = 100;
     public static final int MAX_PAGE_SIZE = 5;
-    final Logger logger = LoggerFactory.getLogger(CityService.class);
+    final Logger logger = LoggerFactory.getLogger(SuggestionsService.class);
     private final CityRepository cityRepository;
 
-    public CityService(CityRepository cityRepository) {
+    public SuggestionsService(CityRepository cityRepository) {
         this.cityRepository = cityRepository;
     }
 
@@ -33,9 +33,9 @@ public class CityService {
         return cities;
     }
 
-    public FrontSuggestionsRecord retrieveCities(Optional<String> query,
-                                                 SuggestionsDtoRecord.Filters filters,
-                                                 SuggestionsDtoRecord.PagesInfo pagesInfo) {
+    public FrontSuggestionsRecord retrieveSuggestions(Optional<String> query,
+                                                      SuggestionsDtoRecord.Filters filters,
+                                                      SuggestionsDtoRecord.PagesInfo pagesInfo) {
         if (query.isEmpty()) {
             return new FrontSuggestionsRecord(new FrontSuggestionsRecord.Pagination(null, null), Collections.emptyList(), new FrontSuggestionsRecord.FrontSuggestionsFilters(Collections.emptyList(), Collections.emptyList()));
         }
@@ -109,14 +109,21 @@ public class CityService {
         return pageSize.filter(integer -> integer > 0).orElse(MAX_PAGE_SIZE);
     }
 
-    private List<CityRecord> getSubListAccordingToCurrentPage(Integer currentPage, List<CityRecord> cities, Integer pageSize) {
+    private List<FrontCityRecord> getSubListAccordingToCurrentPage(Integer currentPage, List<CityRecord> cities, Integer pageSize) {
+        List<CityRecord> paginatedCities;
         if (currentPage < getTotalNumberOfPages(cities, pageSize)) {
-            cities = retrieveSublistOfCities(currentPage, pageSize, cities);
+            paginatedCities = retrieveSublistOfCities(currentPage, pageSize, cities);
         } else {
-            cities = Collections.emptyList();
+            paginatedCities = Collections.emptyList();
             logger.warn("no cities found");
         }
-        return cities;
+
+        final int totalNumberOfCities = cities.size();
+
+        return paginatedCities.stream().map((c) -> {
+            final float score = (float) (100 - (cities.indexOf(c) * totalNumberOfCities) / 100) / 100;
+            return new FrontCityRecord(c,score);
+        }).toList();
     }
 
     private Predicate<CityRecord> fromName(String q) {

@@ -7,7 +7,7 @@ import com.coveo.challenge.features.search.controller.SuggestionsDtoRecord;
 import com.coveo.challenge.features.search.service.FrontSuggestionsRecord;
 import com.coveo.challenge.features.search.repository.CityRecord;
 import com.coveo.challenge.features.search.repository.CityRepository;
-import com.coveo.challenge.features.search.service.CityService;
+import com.coveo.challenge.features.search.service.SuggestionsService;
 import com.coveo.challenge.suggestion.helper.SuggestionHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +21,13 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class CityServiceTest {
 
     @Autowired
-    private CityService service;
+    private SuggestionsService service;
 
     @MockBean
     private CityRepository cityRepository;
@@ -52,7 +51,7 @@ public class CityServiceTest {
         final SuggestionsDtoRecord.PagesInfo pagesInfo = new SuggestionsDtoRecord.PagesInfo(Optional.of(0), Optional.of(5));
 
 
-        final FrontSuggestionsRecord searchResult = service.retrieveCities(Optional.of("Qu"), filters, pagesInfo);
+        final FrontSuggestionsRecord searchResult = service.retrieveSuggestions(Optional.of("Qu"), filters, pagesInfo);
 
         assertEquals(expectedSuggestions, searchResult);
         verify(cityRepository, times(1)).getCities();
@@ -68,10 +67,10 @@ public class CityServiceTest {
                 Optional.of(Collections.emptyList()));
         final SuggestionsDtoRecord.PagesInfo pagesInfo = new SuggestionsDtoRecord.PagesInfo(Optional.of(0), Optional.of(5));
 
-        final FrontSuggestionsRecord searchResult = service.retrieveCities(Optional.of("Qué"), filters, pagesInfo);
+        final FrontSuggestionsRecord searchResult = service.retrieveSuggestions(Optional.of("Qué"), filters, pagesInfo);
 
         assertEquals(1, searchResult.pagination().totalNumberOfPages());
-        assertEquals(searchResult.cities(), List.of(SuggestionHelper.QUEBEC_CITY));
+        assertEquals(searchResult.cities(), List.of(SuggestionHelper.FRONT_QUEBEC_CITY));
         verify(cityRepository, times(1)).getCities();
 
     }
@@ -86,9 +85,9 @@ public class CityServiceTest {
                 Optional.of(Collections.emptyList()));
         final SuggestionsDtoRecord.PagesInfo pagesInfo = new SuggestionsDtoRecord.PagesInfo(Optional.of(0), Optional.of(5));
 
-        final FrontSuggestionsRecord searchResult = service.retrieveCities(Optional.of("Qu"), filters, pagesInfo);
+        final FrontSuggestionsRecord searchResult = service.retrieveSuggestions(Optional.of("Qu"), filters, pagesInfo);
 
-        assertEquals(SuggestionHelper.CITIES, searchResult.cities());
+        assertEquals(SuggestionHelper.FRONT_CITIES, searchResult.cities());
         assertEquals(2, searchResult.pagination().totalNumberOfPages());
         verify(cityRepository, times(1)).getCities();
     }
@@ -102,7 +101,7 @@ public class CityServiceTest {
                 Optional.of(Collections.emptyList()));
         final SuggestionsDtoRecord.PagesInfo pagesInfo = new SuggestionsDtoRecord.PagesInfo(Optional.of(0), Optional.of(5));
 
-        final FrontSuggestionsRecord searchResult = service.retrieveCities(Optional.of("Qu"), filters, pagesInfo);
+        final FrontSuggestionsRecord searchResult = service.retrieveSuggestions(Optional.of("Qu"), filters, pagesInfo);
 
         assertEquals(Collections.emptyList(), searchResult.cities());
         assertEquals(0, searchResult.pagination().totalNumberOfPages());
@@ -120,11 +119,11 @@ public class CityServiceTest {
         final SuggestionsDtoRecord.PagesInfo pagesInfo = new SuggestionsDtoRecord.PagesInfo(Optional.of(Integer.MIN_VALUE), Optional.of(5));
 
 
-        final FrontSuggestionsRecord searchResult = service.retrieveCities(Optional.of("Qu"), filters, pagesInfo);
+        final FrontSuggestionsRecord searchResult = service.retrieveSuggestions(Optional.of("Qu"), filters, pagesInfo);
 
 
         assertEquals(0, searchResult.pagination().page());
         assertEquals(1, searchResult.pagination().totalNumberOfPages());
-        assertEquals(searchResult.cities(), List.of(SuggestionHelper.QUEBEC_CITY));
+        assertEquals(searchResult.cities(), List.of(SuggestionHelper.FRONT_QUEBEC_CITY));
     }
 }

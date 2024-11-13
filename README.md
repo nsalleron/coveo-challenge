@@ -89,6 +89,7 @@ The frontend improvements focus on enhancing the user experience and modernizing
 - **Tech:** Update dependencies (React 16 => 18).
 - **Tech:** Migrate CSS files to TailwindCSS.
 - **Tech:** Add hooks `useDebounce`, `useObjectState`, `useApiSearch` for refactoring and optimisation.
+- **Tech:** SQL ? Available on branch feat-sqlite
 
 - **Feature :** Custom definition of page SIZE.
 - **Feature (TODO):** Display elevation.

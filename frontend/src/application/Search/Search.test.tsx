@@ -17,7 +17,7 @@ const defaultSearchFixture = {
     page: 0,
     totalNumberOfPages: 1,
   },
-  cities: [{ id: 1, country: 'aCountry', name: 'aName', altNames: [], admins: [] }],
+  cities: [{ score: 1, city: { id: 1, country: 'aCountry', name: 'aName', altNames: [], admins: [] }}],
   filters: {
     countries: [{ id: 0, name: 'aCountryName' }],
     admins: [{ id: 0, name: 'aAdminName' }],
