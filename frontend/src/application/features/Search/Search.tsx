@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import SearchBar from './components/SearchBar/SearchBar';
 import { Results } from './components/Results/Results';
-import useObjectState from '../core/hooks/useObjectState';
+import useObjectState from '../../core/hooks/useObjectState';
 
-import useDebounce from '../core/hooks/useDebounce';
-import { askLocation } from '../core/utils/location';
+import useDebounce from '../../core/hooks/useDebounce';
+import { askLocation } from '../../core/utils/location';
 import { useSearchParams } from 'react-router-dom';
-import useSearch, {City, FrontCity} from './useSearchApi';
+import useSearch, {FrontCity} from './useSearchApi';
 import {
   LatLngCoords,
   retrievePageFromSearchParams,

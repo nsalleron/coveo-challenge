@@ -1,7 +1,7 @@
-package com.coveo.challenge.suggestion.helper;
+package com.coveo.challenge.features.suggestions.helper;
 
-import com.coveo.challenge.features.search.repository.CityRecord;
-import com.coveo.challenge.features.search.service.FrontCityRecord;
+import com.coveo.challenge.features.suggestions.repository.CityRecord;
+import com.coveo.challenge.features.suggestions.service.FrontCityRecord;
 
 import java.util.Collections;
 import java.util.List;

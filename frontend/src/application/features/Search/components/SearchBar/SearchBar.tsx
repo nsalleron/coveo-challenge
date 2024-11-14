@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { faLocationCrosshairs, faMagnifyingGlass, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { toNumber } from 'lodash';
-import DropdownMenu from '../../../components/DropdownMenu';
+import DropdownMenu from '../../../../components/DropdownMenu';
 import { Filter } from '../../useSearchApi';
 
 const radiusValues = [null, 5, 10, 20, 40, 100];

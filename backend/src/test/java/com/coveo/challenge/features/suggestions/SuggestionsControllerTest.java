@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2011 - 2019, Coveo Solutions Inc.
  */
-package com.coveo.challenge.suggestion;
+package com.coveo.challenge.features.suggestions;
 
-import com.coveo.challenge.features.search.controller.SuggestionsDtoRecord;
-import com.coveo.challenge.features.search.service.SuggestionsService;
-import com.coveo.challenge.features.search.service.FrontSuggestionsRecord;
-import com.coveo.challenge.features.search.controller.SuggestionsController;
-import com.coveo.challenge.suggestion.helper.SuggestionHelper;
+import com.coveo.challenge.features.suggestions.controller.SuggestionsController;
+import com.coveo.challenge.features.suggestions.controller.SuggestionsDtoRecord;
+import com.coveo.challenge.features.suggestions.helper.SuggestionHelper;
+import com.coveo.challenge.features.suggestions.service.FrontSuggestionsRecord;
+import com.coveo.challenge.features.suggestions.service.SuggestionsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +18,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class SuggestionsControllerTest {

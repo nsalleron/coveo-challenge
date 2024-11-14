@@ -1,4 +1,4 @@
-package com.coveo.challenge.features.search.repository;
+package com.coveo.challenge.features.suggestions.repository;
 
 import java.util.List;
 

@@ -4,7 +4,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import '@testing-library/jest-dom';
-import { withMemoryRouter } from '../../../test/tests-utils';
+import { withMemoryRouter } from '../../../../test/tests-utils';
 
 jest.mock('@tanstack/react-query', () => ({
   useQuery: jest.fn(),

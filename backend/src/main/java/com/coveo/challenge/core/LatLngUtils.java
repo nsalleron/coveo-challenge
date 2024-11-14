@@ -1,6 +1,10 @@
 package com.coveo.challenge.core;
 
-import static java.lang.Math.*;
+import static java.lang.Math.atan2;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.toRadians;
 
 public class LatLngUtils {
     public static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {

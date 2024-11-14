@@ -1,9 +1,9 @@
-package com.coveo.challenge.features.search.service;
+package com.coveo.challenge.features.suggestions.service;
 
 import com.coveo.challenge.core.LatLngUtils;
-import com.coveo.challenge.features.search.controller.SuggestionsDtoRecord;
-import com.coveo.challenge.features.search.repository.CityRecord;
-import com.coveo.challenge.features.search.repository.CityRepository;
+import com.coveo.challenge.features.suggestions.controller.SuggestionsDtoRecord;
+import com.coveo.challenge.features.suggestions.repository.CityRecord;
+import com.coveo.challenge.features.suggestions.repository.CityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -122,7 +122,7 @@ public class SuggestionsService {
 
         return paginatedCities.stream().map((c) -> {
             final float score = (float) (100 - (cities.indexOf(c) * totalNumberOfCities) / 100) / 100;
-            return new FrontCityRecord(c,score);
+            return new FrontCityRecord(c, score);
         }).toList();
     }
 

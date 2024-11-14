@@ -1,10 +1,10 @@
 /**
  * Copyright (c) 2011 - 2019, Coveo Solutions Inc.
  */
-package com.coveo.challenge.suggestion;
+package com.coveo.challenge.features.suggestions;
 
-import com.coveo.challenge.features.search.repository.CityRecord;
-import com.coveo.challenge.features.search.repository.CityRepository;
+import com.coveo.challenge.features.suggestions.repository.CityRecord;
+import com.coveo.challenge.features.suggestions.repository.CityRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,8 +17,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class CityRepositoryTest {
@@ -47,7 +49,6 @@ public class CityRepositoryTest {
         verify(resourceLoader, times(1)).getResource(anyString());
 
     }
-
 
 
 }

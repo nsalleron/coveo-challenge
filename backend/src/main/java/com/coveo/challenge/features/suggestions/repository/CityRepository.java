@@ -1,4 +1,4 @@
-package com.coveo.challenge.features.search.repository;
+package com.coveo.challenge.features.suggestions.repository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +18,8 @@ import java.util.List;
  */
 @Repository
 public class CityRepository {
-    List<CityRecord> cities;
-
     final Logger logger = LoggerFactory.getLogger(CityRepository.class);
+    List<CityRecord> cities;
 
     public CityRepository(ResourceLoader resourceLoader) throws IOException {
         this.cities = new ArrayList<>(this.readCities(resourceLoader.getResource("classpath:data/cities_canada-usa.tsv").getInputStream()).values());
