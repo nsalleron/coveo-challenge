@@ -3,8 +3,9 @@
  */
 package com.coveo.challenge.suggestion;
 
-import com.coveo.challenge.features.search.repository.CityRecord;
+import com.coveo.challenge.features.search.repository.CityEntity;
 import com.coveo.challenge.features.search.repository.CityRepository;
+import com.coveo.challenge.features.search.repository.CityRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,12 +37,12 @@ public class CityRepositoryTest {
     @BeforeEach
     void setUp() throws IOException {
         when(resourceLoader.getResource("classpath:data/cities_canada-usa.tsv")).thenReturn(new ClassPathResource("data/cities_canada-usa_subset.tsv"));
-        repository = new CityRepository(resourceLoader);
+        repository = new CityRepositoryImpl(resourceLoader);
     }
 
     @Test
     public void givenSubsetOfCitiesWhenGetCitiesCalledThenWeShouldHaveCorrectNumberOfCities() {
-        final List<CityRecord> records = repository.getCities();
+        final List<CityEntity> records = repository.getCities();
 
         assertEquals(2, records.size());
         verify(resourceLoader, times(1)).getResource(anyString());

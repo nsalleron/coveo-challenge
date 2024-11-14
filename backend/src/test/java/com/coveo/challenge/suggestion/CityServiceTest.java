@@ -5,8 +5,8 @@ package com.coveo.challenge.suggestion;
 
 import com.coveo.challenge.features.search.controller.SuggestionsDtoRecord;
 import com.coveo.challenge.features.search.service.FrontSuggestionsRecord;
-import com.coveo.challenge.features.search.repository.CityRecord;
-import com.coveo.challenge.features.search.repository.CityRepository;
+import com.coveo.challenge.features.search.repository.CityEntity;
+import com.coveo.challenge.features.search.repository.CityRepositoryImpl;
 import com.coveo.challenge.features.search.service.SuggestionsService;
 import com.coveo.challenge.suggestion.helper.SuggestionHelper;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ public class CityServiceTest {
     private SuggestionsService service;
 
     @MockBean
-    private CityRepository cityRepository;
+    private CityRepositoryImpl cityRepository;
 
     @Test
     void contextLoads() {
@@ -77,7 +77,7 @@ public class CityServiceTest {
 
     @Test
     public void givenSearchThenWeShouldMultipleResult() {
-        final List<CityRecord> bigCitiesList = Stream.concat(SuggestionHelper.CITIES.stream(), SuggestionHelper.CITIES.stream()).toList();
+        final List<CityEntity> bigCitiesList = Stream.concat(SuggestionHelper.CITIES.stream(), SuggestionHelper.CITIES.stream()).toList();
         when(cityRepository.getCities()).thenReturn(bigCitiesList);
         final SuggestionsDtoRecord.Filters filters = new SuggestionsDtoRecord.Filters(
                 Optional.empty(),
